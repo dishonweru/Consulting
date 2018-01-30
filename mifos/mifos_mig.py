@@ -22,12 +22,12 @@ for each value of the column's element (which might be a list),
 duplicate the rest of columns at the corresponding row with the (each) value.
 '''
 
-def flattenColumn(input, column):
-    input['iter_control'] = 's'
-    column_flat = pd.DataFrame([[i, c_flattened] for i, y in input['iter_control'].apply(list).iteritems() for c_flattened in y], columns=['I', column])
+def flattenColumn(input, column):    
+    column_flat = pd.DataFrame([[i, c_flattened] for i, y in input[column].apply(list).iteritems() for c_flattened in y], columns=['I', column])
     column_flat = column_flat.set_index('I')
     return input.drop(column, 1).merge(column_flat, left_index=True, right_index=True)
     
-new_df = flattenColumn(normalized_df, 'id')
+normalized_df['iter_control'] = 's'
+new_df = flattenColumn(normalized_df, 'iter_control')
 new_df.to_csv('out.csv',sep=',',encoding='utf-8')
         
