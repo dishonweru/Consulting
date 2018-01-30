@@ -13,7 +13,7 @@ import pandas as pd
     data = json.load(f)'''
 
 #Create Connection to Webservice endpoint
-request = urllib2.Request('https://odyssey.openmf.org/fineract-provider/api/v1/clients?tenantIdentifier=odyssey')
+request = urllib2.Request('https://odyssey.openmf.org/fineract-provider/api/v1/clients?tenantIdentifier=odyssey&limit=0')
 base64string = base64.encodestring('%s:%s' % ('dishon', 'douglasdc3')).replace('\n', '')
 request.add_header("Authorization", "Basic %s" % base64string)
 result = urllib2.urlopen(request)
