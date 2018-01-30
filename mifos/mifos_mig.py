@@ -5,14 +5,22 @@ Created on Tue Jan 30 08:29:49 2018
 @author: dishon-lendable
 """
 
-import json
+import json, urllib2, base64
 from pandas.io.json import json_normalize
 import pandas as pd
 
-with open('clients.json') as f:
-    data = json.load(f)
+'''with open('clients.json') as f:
+    data = json.load(f)'''
 
-df = pd.DataFrame(data)   
+#Create Connection to Webservice endpoint
+request = urllib2.Request('https://odyssey.openmf.org/fineract-provider/api/v1/clients?tenantIdentifier=odyssey')
+base64string = base64.encodestring('%s:%s' % ('dishon', 'douglasdc3')).replace('\n', '')
+request.add_header("Authorization", "Basic %s" % base64string)
+result = urllib2.urlopen(request)
+response_str = result.read().decode('utf-8')
+json_obj = json.loads(response_str)
+
+df = pd.DataFrame(json_obj)   
 
 normalized_df = json_normalize(df['pageItems'])
 normalized_df['id'] = normalized_df['id'].astype(str)
@@ -29,5 +37,5 @@ def flattenColumn(input, column):
     
 normalized_df['iter_control'] = 's'
 new_df = flattenColumn(normalized_df, 'iter_control')
-new_df.to_csv('out.csv',sep=',',encoding='utf-8')
+new_df.to_csv('clients.csv',sep=',',encoding='utf-8')
         
