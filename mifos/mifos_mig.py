@@ -15,6 +15,7 @@ with open('clients.json') as f:
 df = pd.DataFrame(data)   
 
 normalized_df = json_normalize(df['pageItems'])
+normalized_df['id'] = normalized_df['id'].astype(str)
 
 '''column is a string of the column's name.
 for each value of the column's element (which might be a list),
