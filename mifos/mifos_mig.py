@@ -23,7 +23,8 @@ duplicate the rest of columns at the corresponding row with the (each) value.
 '''
 
 def flattenColumn(input, column):
-    column_flat = pd.DataFrame([[i, c_flattened] for i, y in input[column].apply(list).iteritems() for c_flattened in y], columns=['I', column])
+    input['iter_control'] = 's'
+    column_flat = pd.DataFrame([[i, c_flattened] for i, y in input['iter_control'].apply(list).iteritems() for c_flattened in y], columns=['I', column])
     column_flat = column_flat.set_index('I')
     return input.drop(column, 1).merge(column_flat, left_index=True, right_index=True)
     
